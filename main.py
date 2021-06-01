@@ -8,9 +8,10 @@ import tensorflow as tf
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 import pandas as pd
 
+
+# определяем функцию для приведения данных в определенный формат
 def univariate_data(dataset, start_index, end_index, history_size, target_size):
   data = []
   labels = []
@@ -21,14 +22,14 @@ def univariate_data(dataset, start_index, end_index, history_size, target_size):
 
   for i in range(start_index, end_index):
     indices = range(i-history_size, i)
-    # Reshape data from (history_size,) to (history_size, 1)
+
     data.append(np.reshape(dataset[indices], (history_size, 1)))
     labels.append(dataset[i+target_size])
   return np.array(data), np.array(labels)
-
+# определяем интервалы
 def create_time_steps(length):
   return list(range(-length, 0))
-
+# определяем функцию для визуализации расхождения данных фактически и предугаданных
 def show_plot(plot_data, delta, title):
   labels = ['History', 'True Future', 'Model Prediction']
   marker = ['.-', 'rx', 'go']
@@ -52,7 +53,7 @@ def show_plot(plot_data, delta, title):
 
 def baseline(history):
   return np.mean(history)
-
+# определяем функцию для приведения данных в определенный формат для несколькоих признаков
 def multivariate_data(dataset, target, start_index, end_index, history_size,
                       target_size, step, single_step=False):
   data = []
@@ -72,7 +73,7 @@ def multivariate_data(dataset, target, start_index, end_index, history_size,
       labels.append(target[i:i+target_size])
 
   return np.array(data), np.array(labels)
-
+# определяем функцию для визуализации
 def plot_train_history(history, title):
   loss = history.history['loss']
   val_loss = history.history['val_loss']
@@ -87,7 +88,7 @@ def plot_train_history(history, title):
   plt.legend()
 
   plt.show()
-
+# определяем функцию для визуализации
 def multi_step_plot(history, true_future, prediction):
   plt.figure(figsize=(12, 6))
   num_in = create_time_steps(len(history))
@@ -101,7 +102,7 @@ def multi_step_plot(history, true_future, prediction):
              label='Predicted Future')
   plt.legend(loc='upper left')
   plt.show()
-
+# настраиваем внешний вид графиков
 mpl.rcParams['figure.figsize'] = (8, 6)
 mpl.rcParams['axes.grid'] = False
 
